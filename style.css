@@ -67,3 +67,8 @@ html, body {
 #last {
     padding-bottom: 22px;
 }
+
+#dot {
+    background-color: rgb(59, 59, 59);
+    color: whitesmoke;
+}
