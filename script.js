@@ -48,6 +48,7 @@ const digitButtons = document.querySelectorAll('.num');
 
 digitButtons.forEach(btn => {
     let value = btn.innerHTML;
-    addEventListener('onclick', btn);
-    displayDiv.innerText=result;
+    btn.addEventListener('click', () => {
+        displayDiv.innerText+=value;
+    });
 });
