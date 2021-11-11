@@ -55,13 +55,14 @@ const digitButtons = document.querySelectorAll('.num');
 const operandButtons = document.querySelectorAll('.right');
 
 let operator = '';
+let decimal = false;
 
 digitButtons.forEach(btn => {
     let value = btn.innerText;
     btn.addEventListener('click', () => {
 
         operandButtons.forEach(btn => {
-            if (btn.style.backgroundColor === 'whitesmoke') {
+            if (btn.style.backgroundColor === 'whitesmoke' && decimal === false) {
                 btn.style.backgroundColor = 'orangered';
                 btn.style.color = 'whitesmoke';
                 displayDiv.innerText = '';
@@ -70,7 +71,7 @@ digitButtons.forEach(btn => {
 
 
         if (displayDiv.innerText === '0'){
-            console.log(displayDiv.innerText);
+
             if (value !== '0') {
                 displayDiv.innerText = value;
                 resetBtn.innerText = 'C';
@@ -86,15 +87,13 @@ digitButtons.forEach(btn => {
             }
         }
 
-        // else if (operator !== '') {
-        //     if (displayDiv.innerText === '0.' || displayDiv.innerText === '-0.') {
-        //         displayDiv.innerText += value;
-        //     }
-        //     else {
-        //         displayDiv.innerText = value;
-        //     }
+        
+        else if (operator === '=') {
+            displayDiv.innerText = value;
+            operator = '';
+        }
 
-        // }
+        
 
         else {
 
@@ -103,6 +102,7 @@ digitButtons.forEach(btn => {
                 resetBtn.innerText = 'C';
             }
         }
+
     });
 });
 
@@ -114,6 +114,14 @@ resetBtn.addEventListener('click', () => {
         y = '';
         operator = '';
     }
+
+    operandButtons.forEach(btn => {
+        let operand = btn.innerText;
+        if (btn.style.backgroundColor === 'whitesmoke') {
+            btn.style.backgroundColor = 'orangered';
+            btn.style.color = 'whitesmoke';
+        }
+    })
 })
 
 signBtn.addEventListener('click', () => {
@@ -135,14 +143,36 @@ percentage.addEventListener('click', () => {
 
 dot.addEventListener('click', () => {
 
-    if (operator === '=') {
+    let newNum = false;
 
-        displayDiv.innerText = '0.';
-
+    if (resetBtn.innerText === 'AC') {
+        resetBtn.innerText = 'C';
     }
-    else {
-        displayDiv.innerText += '.';
 
+    operandButtons.forEach(btn => {
+        let operand = btn.innerText;
+        if (btn.style.backgroundColor === 'whitesmoke') {
+            newNum = true;
+            decimal = true;
+            btn.style.backgroundColor = 'orangered';
+            btn.style.color = 'whitesmoke';
+        }
+    })
+
+    if (operator === '=') {
+        displayDiv.innerText = '0.';
+        decimal = true;
+        operator = '';
+    }
+
+    else if (newNum === true) {
+        decimal = true;
+        displayDiv.innerText = '0.';
+    }
+    
+    else {
+        decimal = true;
+        displayDiv.innerText += '.';
     }
 
 })
@@ -176,6 +206,7 @@ operandButtons.forEach(btn => {
             }
 
             x = displayDiv.innerText;
+            decimal = false;
             operator = '+'
             
             
@@ -204,6 +235,7 @@ operandButtons.forEach(btn => {
                 displayDiv.innerText = divide(Number(x),Number(y));
             }
             x = displayDiv.innerText;
+            decimal = false;
             operator = '-';
         }
 
@@ -230,6 +262,7 @@ operandButtons.forEach(btn => {
             }
 
             x = displayDiv.innerText;
+            decimal = false;
             operator = 'x'
         }
 
@@ -256,6 +289,7 @@ operandButtons.forEach(btn => {
             }
 
             x = displayDiv.innerText;
+            decimal = false;
             operator = '÷';
         }
 
@@ -288,6 +322,7 @@ operandButtons.forEach(btn => {
                 }
             }
 
+            decimal = false;
             operator = '=';
 
         }
